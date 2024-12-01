@@ -178,7 +178,7 @@ function goHome() {
 
 
 function checkGameCompletion() {
-  //if (!hasShuffled) return;
+  if (!hasShuffled) return;
   const tiles = Array.from(document.querySelectorAll("#puzzlearea div"));
   let isCompleted = true;
   const tileSize = containersize / parseInt(localStorage.getItem("selectedSize"));
