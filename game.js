@@ -8,7 +8,6 @@ let movesCount = 0; // Number of moves made
 let containersize =0;
 let size=0
 window.onload = function () {
-  showCongratsPopup();
   const playerName = localStorage.getItem("playerName") || "Player";
   const backgroundImage = localStorage.getItem("backgroundImage") || "bg1.jpg";
   size = parseInt(localStorage.getItem("selectedSize")) || 4;
