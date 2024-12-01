@@ -25,8 +25,20 @@
         <div class="thumbnail" onclick="selectBackground(this)" data-image="bg3.jpg">
           <img src="bg3.jpg" alt="Background 3">
         </div>
-        <div class="thumbnail" onclick="selectBackground(this)" data-image="bg4.jpg">
-          <img src="bg4.jpg" alt="Background 3">
+      </div>
+    </div>
+
+    <div class="background-selection">
+      <h3>Select a size</h3>
+      <div id="thumbnail-section">
+        <div class="thumbnail-size" onclick="selectSize(this,3)">
+          <span>3X3</span>
+        </div>
+        <div class="thumbnail-size" onclick="selectSize(this,4)">
+          <span>4X4</span>
+        </div>
+        <div class="thumbnail-size" onclick="selectSize(this,5)">
+          <span>5X5</span>
         </div>
       </div>
     </div>
@@ -37,6 +49,13 @@
     </div>
 
     <button id="play-now" onclick="startGame()">Play Now</button>
+
+    <div id="feedback-container">
+      <div id="feedback-header">Top Feedback</div>
+      <div id="feedback-list">
+      </div>
+    </div>
+    
   </div>
 
   <script src="index.js"></script>

@@ -1,30 +1,52 @@
 "use strict";
 
 let hasShuffled = false; // Tracks whether the player has shuffled the puzzle
-const emptySpace = { x: 300, y: 300 }; // Initial empty space position
+let emptySpace = { x: 300, y: 300 }; // Initial empty space position
 let timerInterval; // Timer interval reference
 let secondsElapsed = 0; // Total seconds elapsed
 let movesCount = 0; // Number of moves made
-
+let containersize =0;
+let size=0
 window.onload = function () {
+  showCongratsPopup();
   const playerName = localStorage.getItem("playerName") || "Player";
   const backgroundImage = localStorage.getItem("backgroundImage") || "bg1.jpg";
-
+  size = parseInt(localStorage.getItem("selectedSize")) || 4;
   // Display greeting
   document.getElementById("player-greeting").textContent = `Welcome, ${playerName}!`;
-
   // Apply background image and set initial positions for tiles
+  const puzzlearea=document.getElementById("puzzlearea");
+  puzzlearea.innerHTML = "";
+  containersize= size*100;
+  const tileSize = containersize / size; 
+  const backgroundSize = `${size * 100}%`; // Scale the background size
+  emptySpace.x = (size - 1) * tileSize;
+  emptySpace.y = (size - 1) * tileSize;
+  puzzlearea.style.width = `${containersize}px`;
+  puzzlearea.style.height = `${containersize}px`;
+  for (let i = 0; i < size * size - 1; i++) {
+    const div = document.createElement("div");
+    div.textContent = i + 1;
+    div.className = "puzzlepiece";
+    div.style.width = `${tileSize}px`;
+    div.style.height = `${tileSize}px`;
+    puzzlearea.appendChild(div);
+  }
+
+  // Apply styles and positions to tiles
   const tiles = document.querySelectorAll("#puzzlearea div");
   tiles.forEach((tile, index) => {
-    const row = Math.floor(index / 4);
-    const col = index % 4;
+    const row = Math.floor(index / size);
+    const col = index % size;
 
     tile.style.backgroundImage = `url(${backgroundImage})`;
-    tile.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-    tile.style.left = `${col * 100}px`;
-    tile.style.top = `${row * 100}px`;
-    tile.classList.add("puzzlepiece");
+    tile.style.backgroundSize = backgroundSize; // Adjust background size
+    tile.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`; // Adjust based on tile position
+    tile.style.left = `${col * tileSize}px`;
+    tile.style.top = `${row * tileSize}px`;
   });
+
+  
 
   // Shuffle button functionality
   document.getElementById("shufflebutton").onclick = function () {
@@ -99,11 +121,12 @@ function makeTilesMovable() {
 function moveTile(tile) {
   const tileX = parseInt(tile.style.left);
   const tileY = parseInt(tile.style.top);
+  const tileSize = containersize / parseInt(localStorage.getItem("selectedSize"));
 
   // Check if the tile is adjacent to the empty space
   if (
-    (Math.abs(tileX - emptySpace.x) === 100 && tileY === emptySpace.y) ||
-    (Math.abs(tileY - emptySpace.y) === 100 && tileX === emptySpace.x)
+    (Math.abs(tileX - emptySpace.x) === tileSize && tileY === emptySpace.y) ||
+    (Math.abs(tileY - emptySpace.y) === tileSize && tileX === emptySpace.x)
   ) {
     // Swap positions
     tile.style.transition = "all 0.3s ease";
@@ -113,19 +136,24 @@ function moveTile(tile) {
     // Update empty space
     emptySpace.x = tileX;
     emptySpace.y = tileY;
+
+    checkGameCompletion();
   }
+  
 }
+
 
 function shuffleTiles() {
   const tiles = Array.from(document.querySelectorAll("#puzzlearea div"));
-  let shuffleCount = 100;
+  let shuffleCount = size*25;
 
   while (shuffleCount > 0) {
     const movableTiles = tiles.filter((tile) => isAdjacent(tile));
-    const randomTile =
-      movableTiles[Math.floor(Math.random() * movableTiles.length)];
-    moveTile(randomTile);
-    shuffleCount--;
+    if (movableTiles.length > 0) {
+      const randomTile = movableTiles[Math.floor(Math.random() * movableTiles.length)];
+      moveTile(randomTile); // Move the random tile
+      shuffleCount--;
+    }
   }
 }
 
@@ -133,14 +161,112 @@ function shuffleTiles() {
 function isAdjacent(tile) {
   const tileX = parseInt(tile.style.left);
   const tileY = parseInt(tile.style.top);
+  const tileSize = containersize / parseInt(localStorage.getItem("selectedSize"));
+
   return (
-    (Math.abs(tileX - emptySpace.x) === 100 && tileY === emptySpace.y) ||
-    (Math.abs(tileY - emptySpace.y) === 100 && tileX === emptySpace.x)
+    (Math.abs(tileX - emptySpace.x) === tileSize && tileY === emptySpace.y) ||
+    (Math.abs(tileY - emptySpace.y) === tileSize && tileX === emptySpace.x)
   );
 }
+
 
 // Navigate back to the home page
 function goHome() {
   resetGameStats(); // Reset timer and moves when going home
   window.location.href = "index.html";
 }
+
+
+function checkGameCompletion() {
+  //if (!hasShuffled) return;
+  const tiles = Array.from(document.querySelectorAll("#puzzlearea div"));
+  let isCompleted = true;
+  const tileSize = containersize / parseInt(localStorage.getItem("selectedSize"));
+
+
+  tiles.forEach((tile, index) => {
+    const expectedX = (index % size) * tileSize;
+    const expectedY = Math.floor(index / size) * tileSize;
+
+    const actualX = parseInt(tile.style.left);
+    const actualY = parseInt(tile.style.top);
+
+    if (expectedX !== actualX || expectedY !== actualY) {
+      isCompleted = false;
+    }
+  });
+
+  // Check if empty space is at the bottom-right
+  if (emptySpace.x !== (size - 1) * tileSize || emptySpace.y !== (size - 1) * tileSize) {
+    isCompleted = false;
+  }
+
+  // Display a success message if the game is completed
+  if (isCompleted) {
+    alert("Completed");
+    showCongratsPopup();
+    stopTimer(); // Stop the timer
+  }
+
+  return isCompleted;
+}
+
+
+function showCongratsPopup() {
+  const popup = document.getElementById("congrats-popup");
+  popup.classList.remove("hidden");
+  popup.classList.add("popup")
+  // Start the confetti effect
+  startConfettiEffect();
+}
+
+function saveFeedback() {
+  const feedbackInput = document.getElementById("feedback-input").value.trim();
+  if (feedbackInput === "") {
+    alert("Please provide feedback before submitting.");
+    return;
+  }
+
+  // Save feedback to local storage
+  const timestamp = new Date().toISOString();
+  const feedback = { text: feedbackInput, timestamp };
+
+  const feedbackList = JSON.parse(localStorage.getItem("feedbackList")) || [];
+  feedbackList.push(feedback);
+
+  // Sort feedback by timestamp in descending order
+  feedbackList.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
+
+  // Clear the input and hide the popup
+  document.getElementById("feedback-input").value = "";
+  document.getElementById("congrats-popup").classList.add("hidden");
+  document.getElementById("congrats-popup").classList.remove("popup");
+  goHome();
+}
+
+
+function startConfettiEffect() {
+  const confettiContainer = document.createElement("div");
+  confettiContainer.id = "confetti-container";
+  document.body.appendChild(confettiContainer);
+
+  const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
+
+  // Generate confetti pieces
+  for (let i = 0; i < 100; i++) { // Adjust the number of pieces
+    const confettiPiece = document.createElement("div");
+    confettiPiece.className = "confetti";
+    confettiPiece.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+    confettiPiece.style.animationDelay = `${Math.random() * 5}s`; // Random start time
+    confettiPiece.style.setProperty("--color", colors[Math.floor(Math.random() * colors.length)]);
+    confettiContainer.appendChild(confettiPiece);
+  }
+}
+
+// Call this function at the end of the game
+function onGameComplete() {
+  showCongratsPopup();
+}
+

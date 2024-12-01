@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fifteen Puzzle - Game</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 </head>
 <body>
   <div class="container">
@@ -21,10 +23,7 @@
 
     <!-- Puzzle Area -->
     <div id="puzzlearea">
-      <div>1</div> <div>2</div> <div>3</div> <div>4</div>
-      <div>5</div> <div>6</div> <div>7</div> <div>8</div>
-      <div>9</div> <div>10</div> <div>11</div> <div>12</div>
-      <div>13</div> <div>14</div> <div>15</div>
+      
     </div>
 
      <!-- Timer and Move Counter -->
@@ -58,7 +57,20 @@
       </a>
     </div>
   </div>
-
+  <div id="congrats-popup" class="popup">
+    <div class="popup-content">
+      <h2>🎉 Congratulations! 🎉</h2>
+      <p>You have successfully completed the puzzle!</p>
+      <textarea id="feedback-input" placeholder="Share your feedback..."></textarea>
+      <div class="popup-buttons">
+        <button id="submit-feedback" onclick="saveFeedback()">Submit Feedback</button>
+        <button id="skip-button" onclick="goHome()">Skip</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="feedback-list" class="feedback-list"></div>
+  
   <script src="game.js"></script>
 </body>
 </html>

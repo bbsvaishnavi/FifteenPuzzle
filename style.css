@@ -57,6 +57,28 @@ body {
   display: block;
 }
 
+.thumbnail-size {
+ border-color: #007BFF;
+ cursor: pointer;
+  border: 3px solid #007BFF;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+
+}
+
+.thumbnail-size span{
+  padding: 20px;
+}
+
+.thumbnail-size:hover {
+  transform: scale(1.1);
+}
+
+.thumbnail-size.selected {
+  border-color: #ff0022;
+}
+
 .thumbnail:hover {
   transform: scale(1.1);
 }
@@ -238,4 +260,232 @@ button {
 #stats-container span {
   font-weight: bold;
   color: #007BFF;
+}
+
+.hidden {
+  display: none;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-content h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+.popup-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+textarea#feedback-input {
+  width: 80%;
+  height: 80px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.popup-buttons button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.popup-buttons {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  align-items: center; /* Align buttons vertically */
+  margin-top: 20px; /* Add spacing above the buttons */
+}
+
+/* Common button styling */
+.popup-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#submit-feedback {
+  background-color: #4caf50;
+  color: white;
+}
+
+#skip-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.feedback-list {
+  margin: 20px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Feedback container */
+#feedback-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Feedback header */
+#feedback-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Feedback list */
+#feedback-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between items */
+  width: 100%;
+  max-width: 90%; /* Ensure it doesn't stretch too far on large screens */
+  overflow-x: auto; /* Add scroll for small screens if items overflow */
+  padding: 10px;
+}
+
+/* Feedback item styling */
+.feedback-item {
+  flex: 0 0 calc(20% - 15px); /* Ensures 5 items fit horizontally */
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feedback-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Feedback title */
+.feedback-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+/* Feedback content */
+.feedback-content {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Feedback timestamp */
+.feedback-timestamp {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Confetti Animation */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px; /* Reduced size */
+  height: 8px;
+  background: rgba(255, 215, 0, 0.8); /* Yellow confetti */
+  top: -10px;
+  animation: fall 3s linear infinite;
+  opacity: 0.8;
+}
+
+/* Color variations for confetti */
+.confetti:nth-child(odd) { background: rgba(255, 69, 0, 0.8); }  /* Orange */
+.confetti:nth-child(3n) { background: rgba(0, 191, 255, 0.8); }  /* Blue */
+.confetti:nth-child(4n) { background: rgba(50, 205, 50, 0.8); }  /* Green */
+.confetti:nth-child(5n) { background: rgba(238, 130, 238, 0.8); } /* Violet */
+
+/* Falling animation */
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Random positions for confetti */
+.confetti:nth-child(1) { left: 10%; animation-duration: 3s; }
+.confetti:nth-child(2) { left: 25%; animation-duration: 4s; }
+.confetti:nth-child(3) { left: 40%; animation-duration: 2.5s; }
+.confetti:nth-child(4) { left: 55%; animation-duration: 3.5s; }
+.confetti:nth-child(5) { left: 70%; animation-duration: 4s; }
+.confetti:nth-child(6) { left: 85%; animation-duration: 3s; }
+.confetti:nth-child(7) { left: 15%; animation-duration: 4.5s; }
+.confetti:nth-child(8) { left: 30%; animation-duration: 3s; }
+.confetti:nth-child(9) { left: 60%; animation-duration: 2.5s; }
+.confetti:nth-child(10) { left: 90%; animation-duration: 3.5s; }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .card {
+      width: 50px; /* Further reduced size */
+      height: 75px;
+  }
+
+  .controls span,
+  .back-button span,
+  .bet-buttons .chip {
+      padding: 6px 12px; /* Further reduced padding */
+      font-size: 12px; /* Further reduced font size */
+  }
+
+  h1 {
+      font-size: 2em;
+  }
+
+  .chip {
+      width: 35px; /* Further reduced size */
+      height: 35px;
+      font-size: 0.8em;
+  }
 }
