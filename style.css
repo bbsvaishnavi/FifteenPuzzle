@@ -489,3 +489,24 @@ textarea#feedback-input {
       font-size: 0.8em;
   }
 }
+
+
+#music-controls {
+  margin: 20px auto;
+  text-align: center;
+}
+
+#mute-button {
+  font-size: 1em;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#mute-button:hover {
+  background-color: #0056b3;
+}

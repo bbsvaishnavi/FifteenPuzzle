@@ -60,7 +60,26 @@ window.onload = function () {
 
   // Make tiles movable
   makeTilesMovable();
+
+  setupMusicControls();
 };
+
+// Music controls
+function setupMusicControls() {
+  const music = document.getElementById("background-music");
+  const muteButton = document.getElementById("mute-button");
+
+  muteButton.addEventListener("click", () => {
+    if (music.muted) {
+      music.muted = false;
+      muteButton.textContent = "Mute Music";
+    } else {
+      music.muted = true;
+      muteButton.textContent = "Unmute Music";
+    }
+  });
+}
+
 
 // Timer logic
 function startTimer() {

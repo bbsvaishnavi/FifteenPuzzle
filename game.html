@@ -33,6 +33,11 @@
         <p><strong>Moves:</strong> <span id="moves">0</span></p>
     </div>
 
+    <!-- Music Controls -->
+    <div id="music-controls">
+      <button id="mute-button">Mute Music</button>
+    </div>
+
     <!-- Shuffle and Back to Home Buttons -->
     <div id="button-container">
       <button id="shufflebutton">Shuffle</button>
@@ -57,6 +62,13 @@
       </a>
     </div>
   </div>
+
+  <!-- Background Music -->
+  <audio id="background-music" autoplay loop>
+    <source src="background-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <div id="congrats-popup" class="hidden">
     <div class="popup-content">
       <h2>🎉 Congratulations! 🎉</h2>
